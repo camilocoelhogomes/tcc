@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "archiver": "^7.0.1",
     "esbuild": "0.25.1"
   }
 }
