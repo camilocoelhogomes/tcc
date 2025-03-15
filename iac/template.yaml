@@ -14,6 +14,15 @@ Resources:
         - arm64
       Policies:
         - AWSLambdaBasicExecutionRole
+        - Statement:
+            Effect: Allow
+            Action: events:PutEvents
+            Resource: !GetAtt EventBus.Arn
       Environment:
         Variables:
           ENV: production
+
+  EventBus:
+    Type: AWS::Events::EventBus
+    Properties:
+      Name: MyEventBus
