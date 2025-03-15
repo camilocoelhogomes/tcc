@@ -59,6 +59,10 @@ jobs:
       - name: Verify artifact exists in S3
         run: aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/lambda-payment-function/index.js --region sa-east-1
 
+      # Upload permissions file to S3
+      - name: Upload permissions file to S3
+        run: aws s3 cp permissions/lambda-payment-permissions.json s3://${{ secrets.S3_BUCKET_NAME }}/permissions/lambda-payment-permissions.json --region sa-east-1
+
       # Deploy the SAM application
       - name: Deploy SAM application
         run: sam deploy --template-file iac/template.yaml --stack-name my-lambda-stack --capabilities CAPABILITY_IAM --region sa-east-1 --s3-bucket ${{ secrets.S3_BUCKET_NAME }}
