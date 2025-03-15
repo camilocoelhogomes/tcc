@@ -34,15 +34,15 @@ jobs:
 
       # Validate the SAM template
       - name: Validate SAM template
-        run: sam validate
+        run: sam validate --template-file iac/template.yaml
 
       # Build the SAM application
       - name: Build SAM application
-        run: sam build
+        run: sam build --template-file iac/template.yaml
 
       # Package the SAM application
       - name: Package SAM application
-        run: sam package --output-template-file packaged.yaml --s3-bucket ${{ secrets.S3_BUCKET_NAME }}
+        run: sam package --template-file iac/template.yaml --output-template-file packaged.yaml --s3-bucket ${{ secrets.S3_BUCKET_NAME }}
 
       # Deploy the SAM application
       - name: Deploy SAM application
