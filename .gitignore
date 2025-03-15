@@ -1,0 +1,34 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Build artifacts
+dist/
+build/
+coverage/
+.DS_Store
+
+# Environment variables
+.env
+.env.*.local
+
+# AWS SAM build artifacts
+.aws-sam/
+
+# Ignore permissions folder JSON files if needed
+permissions/*.json
+
+# Ignore IDE/editor-specific files
+.vscode/
+.idea/
+*.swp
+
+# Ignore OS-specific files
+Thumbs.db

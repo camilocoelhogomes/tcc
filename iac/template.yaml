@@ -7,17 +7,18 @@ Resources:
       FunctionName: lambda-payment-function
       Handler: index.lambda_handler
       Runtime: nodejs22.x
-      CodeUri: ../lambda-payment-function/src
+      CodeUri: s3://${S3_BUCKET_NAME}/lambda-payment-function/index.js
       MemorySize: 128
       Timeout: 28
       Architectures:
         - arm64
       Policies:
         - AWSLambdaBasicExecutionRole
-        - Statement:
-            Effect: Allow
-            Action: events:PutEvents
-            Resource: !GetAtt EventBus.Arn
+        - PolicyDocument:
+            Fn::Transform:
+              Name: AWS::Include
+              Parameters:
+                Location: ../permissions/lambda-payment-permissions.json
       Environment:
         Variables:
           ENV: production
@@ -25,4 +26,4 @@ Resources:
   EventBus:
     Type: AWS::Events::EventBus
     Properties:
-      Name: MyEventBus
+      Name: tcc-event-bus
