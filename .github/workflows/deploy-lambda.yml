@@ -50,7 +50,6 @@ jobs:
       # Verify S3 bucket exists
       - name: Verify S3 bucket exists
         run: aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }} --region sa-east-1
-
       # Deploy the SAM application
       - name: Deploy SAM application
         run: |

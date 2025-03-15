@@ -15,11 +15,6 @@
       "Effect": "Allow",
       "Action": "logs:PutLogEvents",
       "Resource": "arn:aws:logs:*:*:log-group:/aws/lambda/*:log-stream:*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "events:PutEvents",
-      "Resource": "*"
     }
   ]
 }

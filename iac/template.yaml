@@ -39,7 +39,7 @@ Resources:
             Fn::Transform:
               Name: AWS::Include
               Parameters:
-                Location: s3://tcc-mba-usp-camilo/permissions/lambda-payment-permissions.json
+                Location: ../permissions/lambda-payment-permissions.json
 
   EventBus:
     Type: AWS::Events::EventBus
