@@ -16,6 +16,7 @@ Resources:
       Environment:
         Variables:
           ENV: production
+    DependsOn: EventBus
 
   LambdaExecutionRole:
     Type: AWS::IAM::Role
