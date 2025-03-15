@@ -58,4 +58,5 @@ jobs:
             --stack-name my-lambda-stack \
             --capabilities CAPABILITY_IAM \
             --region sa-east-1 \
+            --s3-bucket ${{ secrets.S3_BUCKET_NAME }} \
             --parameter-overrides BuildTimestamp=$(date +%s)
