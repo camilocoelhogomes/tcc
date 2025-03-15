@@ -18,7 +18,11 @@ Resources:
       Environment:
         Variables:
           ENV: production
+          BuildTimestamp: !Ref BuildTimestamp
       AutoPublishAlias: live
+      DeploymentPreference:
+        Enabled: true
+        Type: AllAtOnce
     DependsOn: EventBus
 
   LambdaExecutionRole:
@@ -43,3 +47,8 @@ Resources:
     Type: AWS::Events::EventBus
     Properties:
       Name: tcc-event-bus
+
+Parameters:
+  BuildTimestamp:
+    Type: String
+    Description: Timestamp to force Lambda update

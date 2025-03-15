@@ -65,4 +65,11 @@ jobs:
 
       # Deploy the SAM application
       - name: Deploy SAM application
-        run: sam deploy --template-file iac/template.yaml --stack-name my-lambda-stack --capabilities CAPABILITY_IAM --region sa-east-1 --s3-bucket ${{ secrets.S3_BUCKET_NAME }} --parameter-overrides S3BucketName=${{ secrets.S3_BUCKET_NAME }}
+        run: |
+          TIMESTAMP=$(date +%s)
+          sam deploy --template-file iac/template.yaml \
+            --stack-name my-lambda-stack \
+            --capabilities CAPABILITY_IAM \
+            --region sa-east-1 \
+            --s3-bucket ${{ secrets.S3_BUCKET_NAME }} \
+            --parameter-overrides S3BucketName=${{ secrets.S3_BUCKET_NAME }} BuildTimestamp=$TIMESTAMP
