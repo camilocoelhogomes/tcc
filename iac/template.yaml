@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  lambda-payment-function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.lambda_handler
+      Runtime: nodejs22.x
+      CodeUri: ../lambda-payment-function/src
+      MemorySize: 128
+      Timeout: 10
+      Architectures:
+        - arm64
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      Environment:
+        Variables:
+          ENV: production
