@@ -8,7 +8,7 @@ Resources:
       Handler: index.lambda_handler
       Runtime: nodejs22.x
       CodeUri:
-        Bucket: !Ref S3BucketName
+        Bucket: !Sub "${S3_BUCKET_NAME}"
         Key: lambda-payment-function/index.js
       MemorySize: 128
       Timeout: 28
@@ -42,8 +42,3 @@ Resources:
     Type: AWS::Events::EventBus
     Properties:
       Name: tcc-event-bus
-
-Parameters:
-  S3BucketName:
-    Type: String
-    Description: Name of the S3 bucket containing the Lambda code
