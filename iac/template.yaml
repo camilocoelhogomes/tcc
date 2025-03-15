@@ -36,15 +36,7 @@ Resources:
             Fn::Transform:
               Name: AWS::Include
               Parameters:
-                Location:
-                  !Join [
-                    "",
-                    [
-                      "s3://",
-                      !Ref S3_BUCKET_NAME,
-                      "/permissions/lambda-payment-permissions.json",
-                    ],
-                  ]
+                Location: !Sub "s3://${S3_BUCKET_NAME}/permissions/lambda-payment-permissions.json"
 
   EventBus:
     Type: AWS::Events::EventBus
