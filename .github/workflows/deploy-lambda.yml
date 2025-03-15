@@ -7,6 +7,7 @@ on:
     paths:
       - 'iac/**'
       - 'lambda-payment-function/**'
+      - 'permissions/**'
 
 jobs:
   deploy:
@@ -33,15 +34,16 @@ jobs:
       - name: Debug AWS credentials
         run: aws sts get-caller-identity
 
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
-        working-directory: lambda-payment-function
-
-      # Build the Lambda function
-      - name: Build Lambda function
-        run: npm run build
-        working-directory: lambda-payment-function
+      # Install dependencies and build all lambda-* directories
+      - name: Install dependencies and build all Lambda functions
+        run: |
+          for dir in lambda-*; do
+            if [ -d "$dir" ]; then
+              echo "Processing $dir..."
+              npm install --prefix "$dir"
+              npm run build --prefix "$dir"
+            fi
+          done
 
       # Validate the SAM template
       - name: Validate SAM template
@@ -50,6 +52,7 @@ jobs:
       # Verify S3 bucket exists
       - name: Verify S3 bucket exists
         run: aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }} --region sa-east-1
+
       # Deploy the SAM application
       - name: Deploy SAM application
         run: |
