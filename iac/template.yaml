@@ -7,7 +7,7 @@ Resources:
       FunctionName: lambda-payment-function
       Handler: index.lambda_handler
       Runtime: nodejs22.x
-      CodeUri: s3://${S3_BUCKET_NAME}/lambda-payment-function/index.js
+      CodeUri: !SUB "s3://${S3_BUCKET_NAME}/lambda-payment-function/index.js"
       MemorySize: 128
       Timeout: 28
       Architectures:
@@ -34,7 +34,7 @@ Resources:
             Fn::Transform:
               Name: AWS::Include
               Parameters:
-                Location: !Sub "../permissions/lambda-payment-permissions.json"
+                Location: !Sub "s3://${S3_BUCKET_NAME}/permissions/lambda-payment-permissions.json"
 
   EventBus:
     Type: AWS::Events::EventBus
