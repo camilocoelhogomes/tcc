@@ -42,8 +42,8 @@ jobs:
 
       # Package the SAM application
       - name: Package SAM application
-        run: sam package --template-file iac/template.yaml --output-template-file packaged.yaml --s3-bucket ${{ secrets.S3_BUCKET_NAME }}
+        run: sam package --template-file iac/template.yaml --output-template-file packaged.yaml --s3-bucket ${{ secrets.S3_BUCKET_NAME }} --region sa-east-1
 
       # Deploy the SAM application
       - name: Deploy SAM application
-        run: sam deploy --template-file packaged.yaml --stack-name my-lambda-stack --capabilities CAPABILITY_IAM
+        run: sam deploy --template-file packaged.yaml --stack-name my-lambda-stack --capabilities CAPABILITY_IAM --region sa-east-1
