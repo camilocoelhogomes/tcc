@@ -7,9 +7,7 @@ Resources:
       FunctionName: lambda-payment-function
       Handler: index.lambda_handler
       Runtime: nodejs22.x
-      CodeUri:
-        Bucket: tcc-mba-usp-camilo
-        Key: lambda-payment-function/lambda-payment-function.zip
+      CodeUri: ../lambda-payment-function/dist
       MemorySize: 128
       Timeout: 28
       Architectures:
