@@ -45,7 +45,7 @@ jobs:
 
       # Upload build artifact to S3
       - name: Upload artifact to S3
-        run: aws s3 cp lambda-payment-function/dist/index.js s3://${{ secrets.S3_BUCKET_NAME }}/lambda-payment-function/index.js --region sa-east-1
+        run: aws s3 cp lambda-payment-function/dist/lambda-payment-function.zip s3://${{ secrets.S3_BUCKET_NAME }}/lambda-payment-function/lambda-payment-function.zip --region sa-east-1
 
       # Validate the SAM template
       - name: Validate SAM template
@@ -57,7 +57,7 @@ jobs:
 
       # Verify artifact exists in S3
       - name: Verify artifact exists in S3
-        run: aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/lambda-payment-function/index.js --region sa-east-1
+        run: aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/lambda-payment-function/lambda-payment-function.zip --region sa-east-1
 
       # Upload permissions file to S3
       - name: Upload permissions file to S3

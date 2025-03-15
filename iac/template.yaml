@@ -9,7 +9,7 @@ Resources:
       Runtime: nodejs22.x
       CodeUri:
         Bucket: tcc-mba-usp-camilo
-        Key: lambda-payment-function/index.js
+        Key: lambda-payment-function/lambda-payment-function.zip
       MemorySize: 128
       Timeout: 28
       Architectures:
