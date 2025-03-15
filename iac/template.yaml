@@ -18,6 +18,7 @@ Resources:
       Environment:
         Variables:
           ENV: production
+      AutoPublishAlias: live
     DependsOn: EventBus
 
   LambdaExecutionRole:
