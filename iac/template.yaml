@@ -14,10 +14,11 @@ Resources:
         - arm64
       Policies:
         - AWSLambdaBasicExecutionRole
-        - Statement:
-            Effect: Allow
-            Action: events:PutEvents
-            Resource: !GetAtt EventBus.Arn
+        - PolicyDocument:
+            Fn::Transform:
+              Name: AWS::Include
+              Parameters:
+                Location: ../permissions/lambda-payment-permissions.json
       Environment:
         Variables:
           ENV: production
@@ -25,4 +26,4 @@ Resources:
   EventBus:
     Type: AWS::Events::EventBus
     Properties:
-      Name: MyEventBus
+      Name: tcc-event-bus
