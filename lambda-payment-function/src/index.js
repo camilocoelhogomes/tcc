@@ -20,7 +20,7 @@ export const lambda_handler = async (event, context) => {
         },
       ],
     }));
-    log.info(`Evento publicado com sucesso ${result}`)
+    log.info(`Evento publicado com sucesso ${JSON.stringify(result)}`)
   } catch (error) {
     log.error(error);
     throw error;
