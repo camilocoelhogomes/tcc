@@ -111,6 +111,9 @@ Resources:
       Targets:
         - Id: OverdueQueueTarget
           Arn: !GetAtt OverdueQueue.Arn
+    DependsOn:
+      - EventBus
+      - OverdueQueue
 
   OverdueQueue:
     Type: AWS::SQS::Queue
@@ -132,7 +135,7 @@ Resources:
             Resource: !GetAtt OverdueQueue.Arn
             Condition:
               ArnEquals:
-                aws:SourceArn: !GetAtt EventBus.Arn
+                aws:SourceArn: !GetAtt OverdueRule.Arn
     DependsOn:
       - OverdueQueue
       - OverdueRule
