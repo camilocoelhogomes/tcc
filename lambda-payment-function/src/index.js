@@ -30,7 +30,7 @@ export const lambda_handler = async (event, context) => {
       logger.error(`Erro ao publicar evento ${JSON.stringify(result)}`);
       throw result.Entries.filter(entry => entry.ErrorCode);
     }
-    logger.info(`TCC - Log`);
+    logger.info(`TCC - Log FunctionName: ${context.functionName} CorrelationId: ${correlationId}`);
     return {
       statusCode: 200,
       body: JSON.stringify({
