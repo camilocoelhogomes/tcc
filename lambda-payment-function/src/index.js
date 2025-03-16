@@ -6,7 +6,8 @@ const eventBridgeClient = new EventBridgeClient();
 export const lambda_handler = async (event, context) => {
   try {
     log.info(JSON.stringify(event));
-    await eventBridgeClient.send(new PutEventsCommand({
+    log.info("publicando evento")
+    const result = await eventBridgeClient.send(new PutEventsCommand({
       Entries: [
         {
           EventBusName: 'tcc-event-bus',
@@ -19,6 +20,7 @@ export const lambda_handler = async (event, context) => {
         },
       ],
     }));
+    log.info(`Evento publicado com sucesso ${result}`)
   } catch (error) {
     log.error(error);
     throw error;

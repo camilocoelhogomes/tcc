@@ -3,6 +3,21 @@
   "Statement": [
     {
       "Effect": "Allow",
+      "Action": "logs:CreateLogGroup",
+      "Resource": "arn:aws:logs:*:*:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "logs:CreateLogStream",
+      "Resource": "arn:aws:logs:*:*:log-group:/aws/lambda/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "logs:PutLogEvents",
+      "Resource": "arn:aws:logs:*:*:log-group:/aws/lambda/*:log-stream:*"
+    },
+    {
+      "Effect": "Allow",
       "Action": [
         "sqs:ReceiveMessage",
         "sqs:DeleteMessage",
