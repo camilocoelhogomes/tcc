@@ -133,7 +133,8 @@ Resources:
     Properties:
       Name: PaymentApi
       StageName: prod
-      EndpointConfiguration: REGIONAL
+      EndpointConfiguration:
+        Type: REGIONAL
       Cors:
         AllowMethods: "'POST'"
         AllowHeaders: "'Content-Type'"
