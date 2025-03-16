@@ -16,13 +16,11 @@ export const messageHandler = async (event, context) => {
   logger.options.meta.functionName = context.functionName;
   logger.options.meta.requestId = context.awsRequestId;
   try {
-    logger.info(`Processando o beneficio ${JSON.stringify(event)}`);
     await new Promise((resolve) => setTimeout(resolve, 500));
-    logger.info(`Beneficio processado com sucesso`);
+    logger.info(`TCC - Log`);
   } catch (error) {
     logger.error(error);
     throw error;
-
   }
 
 }

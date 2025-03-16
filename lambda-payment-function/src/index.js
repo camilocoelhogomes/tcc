@@ -10,8 +10,6 @@ export const lambda_handler = async (event, context) => {
   logger.options.meta.requestId = context.awsRequestId;
   try {
     const body = JSON.parse(event.body);
-    logger.info(`Processando o pagamento ${JSON.stringify(event)}`);
-    logger.info(JSON.stringify({ body: JSON.parse(event.body) }));
     const putEventsComand = {
       Entries: [
         {
@@ -27,13 +25,12 @@ export const lambda_handler = async (event, context) => {
         },
       ],
     };
-    logger.info(`Publicando evento ${JSON.stringify(putEventsComand)}`);
     const result = await eventBridgeClient.send(new PutEventsCommand(putEventsComand));
     if (result.FailedEntryCount > 0) {
       logger.error(`Erro ao publicar evento ${JSON.stringify(result)}`);
       throw result.Entries.filter(entry => entry.ErrorCode);
     }
-    logger.info(`Evento publicado com sucesso ${JSON.stringify(result)}`);
+    logger.info(`TCC - Log`);
     return {
       statusCode: 200,
       body: JSON.stringify({
