@@ -57,7 +57,7 @@ Resources:
               ArnEquals:
                 aws:SourceArn: !GetAtt EventBus.Arn
 
-  EventBusQueuePolicy:
+  BenefitsRuleQueuePolicy:
     Type: AWS::SQS::QueuePolicy
     Properties:
       Queues:
