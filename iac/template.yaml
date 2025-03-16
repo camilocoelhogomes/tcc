@@ -136,9 +136,9 @@ Resources:
       EndpointConfiguration:
         Type: REGIONAL
       Cors:
-        AllowMethods: "'POST'"
-        AllowHeaders: "'Content-Type'"
-        AllowOrigin: "'*'"
+        AllowMethods: "*"
+        AllowHeaders: "*"
+        AllowOrigin: "*" # Ensure all origins are allowed for testing purposes
       DefinitionBody:
         swagger: "2.0"
         info:
