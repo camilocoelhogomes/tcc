@@ -1,4 +1,4 @@
-import log from "lambda-log"; // Use ES module import
+import { LambdaLog } from "lambda-log"; // Use ES module import
 
 
 export const lambda_handler = async (event, context) => {
