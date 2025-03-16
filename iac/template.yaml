@@ -32,8 +32,6 @@ Resources:
           Properties:
             Queue: !GetAtt PaymentQueue.Arn
             MaximumBatchingWindowInSeconds: 3
-      ProvisionedConcurrencyConfig:
-        ProvisionedConcurrentExecutions: 600
 
     DependsOn: EventBus
 

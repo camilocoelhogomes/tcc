@@ -10,6 +10,8 @@ WHERE
 GROUP BY 
   `correlationId`, 
   `functionName`
+HAVING 
+  `occurrences` > 1
 LIMIT 1000;
 
 SELECT 
