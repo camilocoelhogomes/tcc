@@ -1,9 +1,10 @@
 {
   "name": "lambda-payment-function",
   "version": "1.0.1",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "node esbuild.config.js",
+    "build": "rm -rf dist && node esbuild.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,5 +13,8 @@
   "devDependencies": {
     "archiver": "^7.0.1",
     "esbuild": "0.25.1"
+  },
+  "dependencies": {
+    "lambda-log": "^3.1.0"
   }
 }

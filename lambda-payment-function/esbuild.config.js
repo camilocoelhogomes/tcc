@@ -1,4 +1,4 @@
-const esbuild = require('esbuild');
+import esbuild from 'esbuild'; // Use ES module import
 
 const outputDir = './dist';
 const outputFile = `${outputDir}/index.js`;
@@ -9,7 +9,8 @@ esbuild.build({
   bundle: true,                   // Agrupa todas as dependências
   minify: true,                   // Minifica o código
   platform: 'node',               // Define o ambiente como Node.js
-  target: 'node18',               // Define a versão do Node.js
+  target: 'node22',               // Define a versão do Node.js
+  format: 'cjs',                  // Define o formato como CommonJS
   outfile: outputFile,            // Arquivo de saída
 }).then(() => {
   console.log('Build completed successfully.');
