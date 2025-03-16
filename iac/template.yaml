@@ -211,7 +211,7 @@ Resources:
             Fn::Transform:
               Name: AWS::Include
               Parameters:
-                Location: ../permissions/lambda-benefits-permissions.json
+                Location: ../permissions/lambda-overdue-permissions.json
 
   EventBus:
     Type: AWS::Events::EventBus
