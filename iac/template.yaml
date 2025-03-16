@@ -73,6 +73,7 @@ Resources:
             Condition:
               ArnEquals:
                 aws:SourceArn: !GetAtt EventBus.Arn
+    DependsOn: EventBus
 
   LambdaBenefitsFunction:
     Type: AWS::Serverless::Function
