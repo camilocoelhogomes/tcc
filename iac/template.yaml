@@ -233,40 +233,40 @@ Resources:
     Properties:
       Name: tcc-event-bus
 
-  PaymentApi:
-    Type: AWS::Serverless::Api
-    Properties:
-      Name: PaymentApi
-      StageName: prod
-      EndpointConfiguration:
-        Type: REGIONAL
-      Cors:
-        AllowMethods: "'*'" # Specify valid HTTP methods
-        AllowHeaders: "'*'" # Specify valid headers
-        AllowOrigin: "'*'" # Allow all origins
-      MethodSettings:
-        - ResourcePath: "/*"
-          HttpMethod: "*"
-          ThrottlingBurstLimit: 600
-          ThrottlingRateLimit: 600
-      DefinitionBody:
-        swagger: "2.0"
-        info:
-          title: "Payment API"
-          version: "1.0"
-        paths:
-          /payment:
-            post:
-              x-amazon-apigateway-integration:
-                uri:
-                  Fn::Sub:
-                    - "arn:aws:apigateway:${Region}:sqs:path/${QueueName}"
-                    - Region: !Ref "AWS::Region"
-                      QueueName: !GetAtt PaymentQueue.Arn
-                httpMethod: POST
-                type: aws_proxy
-                requestParameters:
-                  integration.request.header.Content-Type: "'application/x-www-form-urlencoded'"
+  # PaymentApi:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     Name: PaymentApi
+  #     StageName: prod
+  #     EndpointConfiguration:
+  #       Type: REGIONAL
+  #     Cors:
+  #       AllowMethods: "'*'" # Specify valid HTTP methods
+  #       AllowHeaders: "'*'" # Specify valid headers
+  #       AllowOrigin: "'*'" # Allow all origins
+  #     MethodSettings:
+  #       - ResourcePath: "/*"
+  #         HttpMethod: "*"
+  #         ThrottlingBurstLimit: 600
+  #         ThrottlingRateLimit: 600
+  #     DefinitionBody:
+  #       swagger: "2.0"
+  #       info:
+  #         title: "Payment API"
+  #         version: "1.0"
+  #       paths:
+  #         /payment:
+  #           post:
+  #             x-amazon-apigateway-integration:
+  #               uri:
+  #                 Fn::Sub:
+  #                   - "arn:aws:apigateway:${Region}:sqs:path/${QueueName}"
+  #                   - Region: !Ref "AWS::Region"
+  #                     QueueName: !GetAtt PaymentQueue.Arn
+  #               httpMethod: POST
+  #               type: aws_proxy
+  #               requestParameters:
+  #                 integration.request.header.Content-Type: "'application/x-www-form-urlencoded'"
 
 Parameters:
   BuildTimestamp:
