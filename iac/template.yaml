@@ -128,6 +128,42 @@ Resources:
     Properties:
       Name: tcc-event-bus
 
+  PaymentApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: PaymentApi
+      StageName: prod
+      EndpointConfiguration:
+        Type: REGIONAL
+      Cors:
+        AllowMethods: "'POST'"
+        AllowHeaders: "'Content-Type'"
+        AllowOrigin: "'*'"
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: "Payment API"
+          version: "1.0"
+        paths:
+          /payment:
+            post:
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub:
+                    - "arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${LambdaArn}/invocations"
+                    - Region: !Ref "AWS::Region"
+                      LambdaArn: !GetAtt LambdaPaymentFunction.Arn
+                httpMethod: POST
+                type: aws_proxy
+
+  LambdaPaymentFunctionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt LambdaPaymentFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${PaymentApi}/*/POST/payment"
+
 Parameters:
   BuildTimestamp:
     Type: String
