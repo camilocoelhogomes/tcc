@@ -72,10 +72,10 @@ Resources:
             Resource: !GetAtt BenefitsQueue.Arn
             Condition:
               ArnEquals:
-                aws:SourceArn: !GetAtt EventBus.Arn
+                aws:SourceArn: !GetAtt BenefitsRule.Arn
     DependsOn:
       - BenefitsQueue
-      - EventBus
+      - BenefitsRule
 
   LambdaBenefitsFunction:
     Type: AWS::Serverless::Function
