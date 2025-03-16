@@ -1,11 +1,16 @@
 import { EventBridgeClient, PutEventsCommand } from "@aws-sdk/client-eventbridge";
-import log from "lambda-log"; // Use ES module import
+import { LambdaLog } from "lambda-log"; // Use ES module import
 const eventBridgeClient = new EventBridgeClient();
 
-
 export const lambda_handler = async (event, context) => {
+  const logger = new LambdaLog();
+  const correlationId = event.requestContext.extendedRequestId;
+  logger.options.meta.correlationId = correlationId
+  logger.options.meta.functionName = context.functionName;
+  logger.options.meta.requestId = context.awsRequestId;
   try {
-    log.info(JSON.stringify({ event, context }));
+
+    logger.info(JSON.stringify({ event, context }));
     const putEventsComand = {
       Entries: [
         {
@@ -18,18 +23,29 @@ export const lambda_handler = async (event, context) => {
           }),
         },
       ],
-    }
-    log.info(`Publicando evento ${JSON.stringify(putEventsComand)}`);
+    };
+    logger.info(`Publicando evento ${JSON.stringify(putEventsComand)}`);
     const result = await eventBridgeClient.send(new PutEventsCommand(putEventsComand));
     if (result.FailedEntryCount > 0) {
-      log.error(`Erro ao publicar evento ${JSON.stringify(result)}`);
+      logger.error(`Erro ao publicar evento ${JSON.stringify(result)}`);
       throw result.Entries.filter(entry => entry.ErrorCode);
     }
-    log.info(`Evento publicado com sucesso ${JSON.stringify(result)}`)
+    logger.info(`Evento publicado com sucesso ${JSON.stringify(result)}`);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: "Evento publicado com sucesso",
+        result,
+      }),
+    };
   } catch (error) {
-    log.error(JSON.stringify(error));
-    throw error;
-
+    logger.error(JSON.stringify(error));
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "Erro ao publicar evento",
+        error: JSON.stringify(error),
+      }),
+    };
   }
-
 };
