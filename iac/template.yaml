@@ -27,6 +27,7 @@ Resources:
     Type: AWS::Events::Rule
     Properties:
       EventBusName: !Ref EventBus
+      Name: benefits-rule
       EventPattern:
         detail-type:
           - payment
