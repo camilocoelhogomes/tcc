@@ -10,7 +10,7 @@ export const lambda_handler = async (event, context) => {
       Entries: [
         {
           EventBusName: 'tcc-event-bus',
-          Source: context.function_name,
+          Source: context.functionName,
           DetailType: 'payment',
           Detail: JSON.stringify({
             amount: 100,
