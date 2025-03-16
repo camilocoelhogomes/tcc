@@ -22,8 +22,6 @@ coverage/
 # AWS SAM build artifacts
 .aws-sam/
 
-# Ignore permissions folder JSON files if needed
-permissions/*.json
 
 # Ignore IDE/editor-specific files
 .vscode/
