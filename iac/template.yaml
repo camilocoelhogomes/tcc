@@ -61,7 +61,7 @@ Resources:
     Type: AWS::SQS::QueuePolicy
     Properties:
       Queues:
-        - "*"
+        - !Ref BenefitsQueue
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -69,11 +69,13 @@ Resources:
             Principal:
               Service: events.amazonaws.com
             Action: sqs:SendMessage
-            Resource: "arn:aws:sqs:*:*:*"
+            Resource: !GetAtt BenefitsQueue.Arn
             Condition:
               ArnEquals:
                 aws:SourceArn: !GetAtt EventBus.Arn
-    DependsOn: EventBus
+    DependsOn:
+      - BenefitsQueue
+      - EventBus
 
   LambdaBenefitsFunction:
     Type: AWS::Serverless::Function
