@@ -15,6 +15,7 @@
     "esbuild": "0.25.1"
   },
   "dependencies": {
+    "@aws-sdk/client-eventbridge": "^3.758.0",
     "lambda-log": "^3.1.0"
   }
 }
