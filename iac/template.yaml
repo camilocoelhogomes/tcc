@@ -57,6 +57,23 @@ Resources:
               ArnEquals:
                 aws:SourceArn: !GetAtt EventBus.Arn
 
+  EventBusQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - "*"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sqs:SendMessage
+            Resource: "arn:aws:sqs:*:*:*"
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !GetAtt EventBus.Arn
+
   LambdaBenefitsFunction:
     Type: AWS::Serverless::Function
     Properties:
