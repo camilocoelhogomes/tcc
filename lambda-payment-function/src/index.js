@@ -9,8 +9,8 @@ export const lambda_handler = async (event, context) => {
   logger.options.meta.functionName = context.functionName;
   logger.options.meta.requestId = context.awsRequestId;
   try {
-
-    logger.info(JSON.stringify({ event, context }));
+    const body = JSON.parse(event.body);
+    logger.info(JSON.stringify({ body: JSON.parse(event.body) }));
     const putEventsComand = {
       Entries: [
         {
@@ -18,8 +18,10 @@ export const lambda_handler = async (event, context) => {
           Source: context.functionName,
           DetailType: 'payment',
           Detail: JSON.stringify({
-            amount: 100,
-            paymentType: 'credit_card',
+            header: {
+              correlationId
+            },
+            body
           }),
         },
       ],
