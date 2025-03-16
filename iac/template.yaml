@@ -268,14 +268,6 @@ Resources:
                 requestParameters:
                   integration.request.header.Content-Type: "'application/x-www-form-urlencoded'"
 
-  LambdaPaymentFunctionPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !GetAtt LambdaPaymentFunction.Arn
-      Action: lambda:InvokeFunction
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${PaymentApi}/*/POST/payment"
-
 Parameters:
   BuildTimestamp:
     Type: String
