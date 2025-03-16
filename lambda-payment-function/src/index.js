@@ -10,6 +10,7 @@ export const lambda_handler = async (event, context) => {
   logger.options.meta.requestId = context.awsRequestId;
   try {
     const body = JSON.parse(event.body);
+    logger.info(`Processando o pagamento ${JSON.stringify(event)}`);
     logger.info(JSON.stringify({ body: JSON.parse(event.body) }));
     const putEventsComand = {
       Entries: [
