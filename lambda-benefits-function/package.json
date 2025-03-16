@@ -1,20 +1,20 @@
 {
-  "name": "lambda-payment-function",
-  "version": "1.0.1",
-  "type": "module",
+  "name": "lambda-benefits-function",
+  "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "rm -rf dist && node esbuild.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "esbuild": "0.25.1"
+    "esbuild": "^0.25.1"
   },
   "dependencies": {
-    "@aws-sdk/client-eventbridge": "^3.758.0",
     "lambda-log": "^3.1.0"
   }
 }

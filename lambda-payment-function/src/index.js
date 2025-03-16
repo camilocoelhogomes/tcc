@@ -21,10 +21,7 @@ export const lambda_handler = async (event, context) => {
     }));
   } catch (error) {
     log.error(error);
-    return {
-      statusCode: 500,
-      body: "Internal Server Error",
-    };
+    throw error;
 
   }
 
