@@ -1,6 +1,11 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Resources:
+  PaymentQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: payment-queue
+
   LambdaPaymentFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -21,6 +26,15 @@ Resources:
       DeploymentPreference:
         Enabled: true
         Type: AllAtOnce
+      Events:
+        PaymentQueueEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt PaymentQueue.Arn
+            MaximumBatchingWindowInSeconds: 3
+      ProvisionedConcurrencyConfig:
+        ProvisionedConcurrentExecutions: 600
+
     DependsOn: EventBus
 
   BenefitsRule:
@@ -232,6 +246,11 @@ Resources:
         AllowMethods: "'*'" # Specify valid HTTP methods
         AllowHeaders: "'*'" # Specify valid headers
         AllowOrigin: "'*'" # Allow all origins
+      MethodSettings:
+        - ResourcePath: "/*"
+          HttpMethod: "*"
+          ThrottlingBurstLimit: 600
+          ThrottlingRateLimit: 600
       DefinitionBody:
         swagger: "2.0"
         info:
@@ -243,11 +262,13 @@ Resources:
               x-amazon-apigateway-integration:
                 uri:
                   Fn::Sub:
-                    - "arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${LambdaArn}/invocations"
+                    - "arn:aws:apigateway:${Region}:sqs:path/${QueueName}"
                     - Region: !Ref "AWS::Region"
-                      LambdaArn: !GetAtt LambdaPaymentFunction.Arn
+                      QueueName: !GetAtt PaymentQueue.Arn
                 httpMethod: POST
                 type: aws_proxy
+                requestParameters:
+                  integration.request.header.Content-Type: "'application/x-www-form-urlencoded'"
 
   LambdaPaymentFunctionPermission:
     Type: AWS::Lambda::Permission
