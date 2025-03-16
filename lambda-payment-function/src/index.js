@@ -5,7 +5,7 @@ const eventBridgeClient = new EventBridgeClient();
 
 export const lambda_handler = async (event, context) => {
   try {
-    log.info(JSON.stringify(event));
+    log.info(JSON.stringify({ event, context }));
     const putEventsComand = {
       Entries: [
         {
