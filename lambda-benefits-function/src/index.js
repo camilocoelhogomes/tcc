@@ -2,32 +2,25 @@ import { LambdaLog } from "lambda-log"; // Use ES module import
 
 
 export const lambda_handler = async (event, context) => {
-  try {
-    for await (const record of event.Records) {
-      await messageHandler(JSON.parse(record.body), context);
-    }
-    logger.info(JSON.stringify({ event, context }));
-  } catch (error) {
-    log.error(error);
-    throw error;
 
+  for await (const record of event.Records) {
+    await messageHandler(JSON.parse(record.body), context);
   }
 
 };
 
 export const messageHandler = async (event, context) => {
+  const logger = new LambdaLog();
+  logger.options.meta.correlationId = event.detail.header.correlationId;
+  logger.options.meta.eventId = event.id;
+  logger.options.meta.functionName = context.functionName;
+  logger.options.meta.requestId = context.awsRequestId;
   try {
-    const logger = new LambdaLog();
-
-    logger.options.meta.correlationId = event.detail.header.correlationId;
-    logger.options.meta.eventId = event.id;
-    logger.options.meta.functionName = context.functionName;
-    logger.options.meta.requestId = context.awsRequestId;
     logger.info(`Processando o beneficio ${JSON.stringify(event)}`);
     await new Promise((resolve) => setTimeout(resolve, 500));
-
+    logger.info(`Beneficio processado com sucesso`);
   } catch (error) {
-    log.error(error);
+    logger.error(error);
     throw error;
 
   }
