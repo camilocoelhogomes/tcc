@@ -1,13 +1,10 @@
 config:
   target: "{{ $processEnvironment.TARGET_URL }}"
   phases:
-    - duration: 60
-      arrivalRate: 5
-      rampTo: 50
-    - duration: 60
+    - duration: 120
       arrivalRate: 50
       rampTo: 300
-    - duration: 180
+    - duration: 900
       arrivalRate: 300
   defaults:
     headers:
