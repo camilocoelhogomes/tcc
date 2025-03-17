@@ -89,7 +89,8 @@ Resources:
             Queue: !GetAtt PaymentQueue.Arn
             MaximumBatchingWindowInSeconds: 3
             BatchSize: 10
-            MaximumConcurrency: 200
+            ScalingConfig:
+              MaximumConcurrency: 200
 
   BenefitsRule:
     Type: AWS::Events::Rule
@@ -169,7 +170,8 @@ Resources:
             Queue: !GetAtt BenefitsQueue.Arn
             MaximumBatchingWindowInSeconds: 3
             BatchSize: 10
-            MaximumConcurrency: 200
+            ScalingConfig:
+              MaximumConcurrency: 200
 
   OverdueRule:
     Type: AWS::Events::Rule
@@ -255,7 +257,8 @@ Resources:
             Queue: !GetAtt OverdueQueue.Arn
             MaximumBatchingWindowInSeconds: 3
             BatchSize: 10
-            MaximumConcurrency: 200
+            ScalingConfig:
+              MaximumConcurrency: 200
     DependsOn:
       - OverdueQueue
       - OverdueRule
