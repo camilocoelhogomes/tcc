@@ -40,7 +40,6 @@ Resources:
                 - apigateway.amazonaws.com
             Action:
               - sts:AssumeRole
-      RoleName: ApiGatewayToSQSRole
       Policies:
         - PolicyName: ApiGatewayLogsPolicy
           PolicyDocument:
