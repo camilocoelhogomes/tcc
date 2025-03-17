@@ -46,5 +46,5 @@ export const recordHandler = async (event, context) => {
     }),
   }
   logger.info(eventMapped);
-  return event;
+  return eventMapped;
 }
