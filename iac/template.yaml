@@ -62,6 +62,8 @@ Resources:
 
   LambdaPaymentFunction:
     Type: AWS::Serverless::Function
+    DependsOn:
+      - PaymentQueue
     Properties:
       FunctionName: lambda-payment-function
       Handler: index.lambda_handler
@@ -86,8 +88,6 @@ Resources:
           Properties:
             Queue: !GetAtt PaymentQueue.Arn
             MaximumBatchingWindowInSeconds: 3
-
-    DependsOn: EventBus
 
   BenefitsRule:
     Type: AWS::Events::Rule
@@ -289,6 +289,9 @@ Resources:
 
   PaymentApi:
     Type: AWS::Serverless::Api
+    DependsOn:
+      - ApiGatewayToSQSRole
+      - PaymentQueue
     Properties:
       Name: PaymentApi
       StageName: prod
