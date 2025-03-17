@@ -69,7 +69,7 @@ Resources:
       Runtime: nodejs22.x
       CodeUri: ../lambda-payment-function/dist
       MemorySize: 128
-      ReservedConcurrentExecutions: 4
+      ReservedConcurrentExecutions: 3
       Timeout: 30
       Architectures:
         - arm64
@@ -162,7 +162,7 @@ Resources:
         Variables:
           ENV: production
           BuildTimestamp: !Ref BuildTimestamp
-      ReservedConcurrentExecutions: 4
+      ReservedConcurrentExecutions: 3
       Events:
         BenefitsQueueEvent:
           Type: SQS
@@ -249,7 +249,7 @@ Resources:
         Variables:
           ENV: production
           BuildTimestamp: !Ref BuildTimestamp
-      ReservedConcurrentExecutions: 4
+      ReservedConcurrentExecutions: 3
       Events:
         OverdueQueueEvent:
           Type: SQS
