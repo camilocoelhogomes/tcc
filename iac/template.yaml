@@ -303,8 +303,8 @@ Resources:
       MethodSettings:
         - ResourcePath: "/*"
           HttpMethod: "*"
-          ThrottlingBurstLimit: 600
-          ThrottlingRateLimit: 600
+          ThrottlingBurstLimit: 600 # Allow up to 600 RPS
+          ThrottlingRateLimit: 600 # Allow up to 600 RPS
       DefinitionBody:
         swagger: "2.0"
         info:
