@@ -27,12 +27,14 @@ export const lambda_handler = async (event, context) => {
 
 export const recordHandler = async (event, context) => {
   const logger = new LambdaLog();
+
   const correlationId = event.messageAttributes.correlationId.stringValue;
   logger.options.meta.correlationId = correlationId
   logger.options.meta.functionName = context.functionName;
   logger.options.meta.requestId = context.awsRequestId;
-  logger.info(`TCC - Log FunctionName: ${context.functionName} EventSource: ${event.source} CorrelationId: ${correlationId}`);
-  return {
+  logger.info(`TCC - Log FunctionName: ${context.functionName} CorrelationId: ${correlationId}`);
+  logger.info({ event, context })
+  const eventMapped = {
     EventBusName: 'tcc-event-bus',
     Source: context.functionName,
     DetailType: 'payment',
@@ -43,4 +45,6 @@ export const recordHandler = async (event, context) => {
       body: JSON.parse(event.body)
     }),
   }
+  logger.info(eventMapped);
+  return event;
 }
