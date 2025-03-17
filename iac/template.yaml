@@ -6,6 +6,60 @@ Resources:
     Properties:
       QueueName: payment-queue
 
+  PaymentQueuePolicy:
+    DependsOn:
+      - PaymentQueue
+      - PaymentApi
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref PaymentQueue
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sqs:SendMessage
+            Resource: !GetAtt PaymentQueue.Arn
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !GetAtt EventBus.Arn
+
+  ApiGatewayToSQSRole:
+    DependsOn:
+      - PaymentQueue
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      RoleName: ApiGatewayToSQSRole
+      Policies:
+        - PolicyName: ApiGatewayLogsPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action: sqs:SendMessage
+                Effect: Allow
+                Resource: !GetAtt "PaymentQueue.Arn"
+              - Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:DescribeLogGroups
+                  - logs:DescribeLogStreams
+                  - logs:PutLogEvents
+                  - logs:GetLogEvents
+                  - logs:FilterLogEvents
+                Effect: Allow
+                Resource: "*"
+
   LambdaPaymentFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -233,40 +287,46 @@ Resources:
     Properties:
       Name: tcc-event-bus
 
-  # PaymentApi:
-  #   Type: AWS::Serverless::Api
-  #   Properties:
-  #     Name: PaymentApi
-  #     StageName: prod
-  #     EndpointConfiguration:
-  #       Type: REGIONAL
-  #     Cors:
-  #       AllowMethods: "'*'" # Specify valid HTTP methods
-  #       AllowHeaders: "'*'" # Specify valid headers
-  #       AllowOrigin: "'*'" # Allow all origins
-  #     MethodSettings:
-  #       - ResourcePath: "/*"
-  #         HttpMethod: "*"
-  #         ThrottlingBurstLimit: 600
-  #         ThrottlingRateLimit: 600
-  #     DefinitionBody:
-  #       swagger: "2.0"
-  #       info:
-  #         title: "Payment API"
-  #         version: "1.0"
-  #       paths:
-  #         /payment:
-  #           post:
-  #             x-amazon-apigateway-integration:
-  #               uri:
-  #                 Fn::Sub:
-  #                   - "arn:aws:apigateway:${Region}:sqs:path/${QueueName}"
-  #                   - Region: !Ref "AWS::Region"
-  #                     QueueName: !GetAtt PaymentQueue.Arn
-  #               httpMethod: POST
-  #               type: aws_proxy
-  #               requestParameters:
-  #                 integration.request.header.Content-Type: "'application/x-www-form-urlencoded'"
+  PaymentApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: PaymentApi
+      StageName: prod
+      EndpointConfiguration:
+        Type: REGIONAL
+      Cors:
+        AllowMethods: "'*'" # Specify valid HTTP methods
+        AllowHeaders: "'*'" # Specify valid headers
+        AllowOrigin: "'*'" # Allow all origins
+      MethodSettings:
+        - ResourcePath: "/*"
+          HttpMethod: "*"
+          ThrottlingBurstLimit: 600
+          ThrottlingRateLimit: 600
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: "Payment API"
+          version: "1.0"
+        paths:
+          /payment:
+            post:
+              responses:
+                "200":
+                  description: Event post successfully handled and placed on queue
+              x-amazon-apigateway-integration:
+                credentials: !GetAtt ApiGatewayToSQSRole.Arn
+                httpMethod: "POST"
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:sqs:path/${AWS::AccountId}/payment-queue"
+                responses:
+                  default:
+                    statusCode: "200"
+                requestParameters:
+                  integration.request.header.Content-Type: "'application/x-www-form-urlencoded'"
+                requestTemplates:
+                  application/json: "Action=SendMessage&MessageBody=$input.body"
+                passthroughBehavior: "never"
+                type: "aws"
 
 Parameters:
   BuildTimestamp:

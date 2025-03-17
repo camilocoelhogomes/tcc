@@ -4,10 +4,13 @@ const eventBridgeClient = new EventBridgeClient();
 
 export const lambda_handler = async (event, context) => {
   const logger = new LambdaLog();
+  logger.info({ event, context });
+  return;
   const correlationId = event.requestContext.extendedRequestId;
   logger.options.meta.correlationId = correlationId
   logger.options.meta.functionName = context.functionName;
   logger.options.meta.requestId = context.awsRequestId;
+
   try {
     const body = JSON.parse(event.body);
     const putEventsComand = {
