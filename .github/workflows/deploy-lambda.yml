@@ -55,10 +55,16 @@ jobs:
 
       # Deploy the SAM application
       - name: Deploy SAM application
+        env:
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
         run: |
+          if [ -z "$S3_BUCKET_NAME" ]; then
+            echo "Error: S3_BUCKET_NAME is not set in secrets."
+            exit 1
+          fi
           sam deploy --template-file iac/template.yaml \
             --stack-name my-lambda-stack \
             --capabilities CAPABILITY_IAM \
-            --region sa-east-1 \ # Ensure the region is explicitly set
-            --s3-bucket ${{ secrets.S3_BUCKET_NAME }} \
+            --region sa-east-1 \
+            --s3-bucket $S3_BUCKET_NAME \
             --parameter-overrides BuildTimestamp=$(date +%s)
