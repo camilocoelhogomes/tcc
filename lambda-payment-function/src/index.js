@@ -8,8 +8,9 @@ export const lambda_handler = async (event, context) => {
 
 
   try {
+    const entries = event.Records.map(r => recordHandler(r, context));
     const putEventsComand = {
-      Entries: event.Records.map(r => recordHandler(r, context)),
+      Entries: entries,
     };
     const result = await eventBridgeClient.send(new PutEventsCommand(putEventsComand));
     if (result.FailedEntryCount > 0) {
@@ -30,7 +31,7 @@ export const lambda_handler = async (event, context) => {
 
 export const recordHandler = async (event, context) => {
   const logger = new LambdaLog();
-  const correlationId = event.messageAttributes.correlationId;
+  const correlationId = event.messageAttributes.correlationId.stringValue;
   logger.options.meta.correlationId = correlationId
   logger.options.meta.functionName = context.functionName;
   logger.options.meta.requestId = context.awsRequestId;
