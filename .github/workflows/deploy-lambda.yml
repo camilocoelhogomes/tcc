@@ -64,6 +64,7 @@ jobs:
           fi
           sam deploy --template-file iac/template.yaml \
             --stack-name my-lambda-stack \
+            --capabilities CAPABILITY_IAM \
             --region sa-east-1 \
             --s3-bucket $S3_BUCKET_NAME \
             --parameter-overrides BuildTimestamp=$(date +%s)
