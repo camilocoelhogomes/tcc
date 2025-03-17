@@ -18,14 +18,8 @@ export const lambda_handler = async (event, context) => {
       throw result.Entries.filter(entry => entry.ErrorCode);
     }
   } catch (error) {
-    logger.error(JSON.stringify(error));
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: "Erro ao publicar evento",
-        error: JSON.stringify(error),
-      }),
-    };
+    logger.error(error);
+    throw error;
   }
 };
 
