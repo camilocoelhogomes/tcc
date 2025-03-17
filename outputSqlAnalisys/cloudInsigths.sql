@@ -12,7 +12,7 @@ GROUP BY
   `functionName`
 HAVING 
   `occurrences` > 1
-LIMIT 1000;
+;
 
 SELECT 
   COUNT(DISTINCT `correlationId`) AS `unique_correlation_ids`
