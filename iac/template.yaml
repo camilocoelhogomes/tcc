@@ -326,7 +326,8 @@ Resources:
                 requestParameters:
                   integration.request.header.Content-Type: "'application/x-www-form-urlencoded'"
                 requestTemplates:
-                  application/json: "Action=SendMessage&MessageBody=$input.body"
+                  application/json: |
+                    Action=SendMessage&MessageBody=$input.body&MessageAttribute.1.Name=correlationId&MessageAttribute.1.Value.StringValue=$context.extendedRequestId&MessageAttribute.1.Value.DataType=String
                 passthroughBehavior: "never"
                 type: "aws"
 
