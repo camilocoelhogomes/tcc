@@ -4,6 +4,7 @@ const eventBridgeClient = new EventBridgeClient();
 
 export const lambda_handler = async (event, context) => {
   const logger = new LambdaLog();
+
   logger.info({ event, context });
   return;
   const correlationId = event.requestContext.extendedRequestId;
