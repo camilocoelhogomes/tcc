@@ -12,6 +12,7 @@ esbuild.build({
   target: 'node22',               // Define a versão do Node.js
   format: 'cjs',                  // Define o formato como CommonJS
   outfile: outputFile,            // Arquivo de saída
+  sourcemap: true,
 }).then(() => {
   console.log('Build completed successfully.');
 }).catch((error) => {
