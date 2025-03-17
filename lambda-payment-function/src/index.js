@@ -11,9 +11,7 @@ export const lambda_handler = async (event, context) => {
     const entries = event.Records.map(r => recordHandler(r, context));
     logger.info(entries)
     const putEventsComand = {
-      Entries: [
-
-      ],
+      Entries: entries,
     };
 
     const result = await eventBridgeClient.send(new PutEventsCommand(putEventsComand));
