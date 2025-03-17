@@ -9,9 +9,11 @@ export const lambda_handler = async (event, context) => {
 
   try {
     const entries = event.Records.map(r => recordHandler(r, context));
+    logger.info(entries)
     const putEventsComand = {
       Entries: entries,
     };
+
     const result = await eventBridgeClient.send(new PutEventsCommand(putEventsComand));
     if (result.FailedEntryCount > 0) {
       logger.error(`Erro ao publicar evento ${JSON.stringify(result)}`);
