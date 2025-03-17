@@ -69,7 +69,7 @@ Resources:
       Runtime: nodejs22.x
       CodeUri: ../lambda-payment-function/dist
       MemorySize: 128
-      ReservedConcurrentExecutions: 210
+      ReservedConcurrentExecutions: 4
       Timeout: 30
       Architectures:
         - arm64
@@ -90,7 +90,7 @@ Resources:
             MaximumBatchingWindowInSeconds: 3
             BatchSize: 10
             ScalingConfig:
-              MaximumConcurrency: 200
+              MaximumConcurrency: 3
 
   BenefitsRule:
     Type: AWS::Events::Rule
@@ -162,7 +162,7 @@ Resources:
         Variables:
           ENV: production
           BuildTimestamp: !Ref BuildTimestamp
-      ReservedConcurrentExecutions: 210
+      ReservedConcurrentExecutions: 4
       Events:
         BenefitsQueueEvent:
           Type: SQS
@@ -171,7 +171,7 @@ Resources:
             MaximumBatchingWindowInSeconds: 3
             BatchSize: 10
             ScalingConfig:
-              MaximumConcurrency: 200
+              MaximumConcurrency: 3
 
   OverdueRule:
     Type: AWS::Events::Rule
@@ -249,7 +249,7 @@ Resources:
         Variables:
           ENV: production
           BuildTimestamp: !Ref BuildTimestamp
-      ReservedConcurrentExecutions: 210
+      ReservedConcurrentExecutions: 4
       Events:
         OverdueQueueEvent:
           Type: SQS
@@ -258,7 +258,7 @@ Resources:
             MaximumBatchingWindowInSeconds: 3
             BatchSize: 10
             ScalingConfig:
-              MaximumConcurrency: 200
+              MaximumConcurrency: 3
     DependsOn:
       - OverdueQueue
       - OverdueRule
