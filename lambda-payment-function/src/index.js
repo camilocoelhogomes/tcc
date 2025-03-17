@@ -9,7 +9,6 @@ export const lambda_handler = async (event, context) => {
 
   try {
     const entries = event.Records.map(r => recordHandler(r, context));
-    logger.info(entries)
     const putEventsComand = {
       Entries: entries,
     };
@@ -33,7 +32,6 @@ export const recordHandler = (event, context) => {
   logger.options.meta.functionName = context.functionName;
   logger.options.meta.requestId = context.awsRequestId;
   logger.info(`TCC - Log FunctionName: ${context.functionName} CorrelationId: ${correlationId}`);
-  logger.info({ event, context })
   const eventMapped = {
     EventBusName: 'tcc-event-bus',
     Source: context.functionName,
@@ -45,6 +43,5 @@ export const recordHandler = (event, context) => {
       body: JSON.parse(event.body)
     }),
   }
-  logger.info(eventMapped);
   return eventMapped;
 }
