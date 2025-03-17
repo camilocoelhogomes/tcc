@@ -1,0 +1,18 @@
+config:
+  target: "{{ $processEnvironment.TARGET_URL }}"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+      rampTo: 300
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - flow:
+      - post:
+          url: "/payment"
+          json:
+            amount: "{{ $randomInt(1, 1000) }}"
+            currency: "USD"
+            description: "Test payment"
