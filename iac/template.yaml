@@ -309,6 +309,7 @@ Resources:
                 Action:
                   - "s3:PutObject"
                   - "s3:PutObjectAcl"
+                  - "s3:GetBucketAcl"
                 Resource: "arn:aws:s3:::tcc-mba-usp-camilo/*"
 
   EventBus:
