@@ -290,6 +290,27 @@ Resources:
               Parameters:
                 Location: ../permissions/lambda-overdue-permissions.json
 
+  CloudWatchLogsExportRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: logs.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: CloudWatchLogsExportPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:PutObject"
+                  - "s3:PutObjectAcl"
+                Resource: "arn:aws:s3:::tcc-mba-usp-camilo/*"
+
   EventBus:
     Type: AWS::Events::EventBus
     Properties:
