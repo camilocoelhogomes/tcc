@@ -17,7 +17,6 @@ export const messageHandler = async (event, context) => {
   logger.options.meta.requestId = context.awsRequestId;
   try {
     logger.info(`TCC - Log FunctionName: ${context.functionName} EventSource: ${event.source} CorrelationId: ${event.detail.header.correlationId}`);
-    await new Promise((resolve) => setTimeout(resolve, 150));
   } catch (error) {
     logger.error(error);
     throw error;
