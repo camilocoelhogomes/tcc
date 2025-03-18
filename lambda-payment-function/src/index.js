@@ -14,6 +14,7 @@ export const lambda_handler = async (event, context) => {
     };
 
     const result = await eventBridgeClient.send(new PutEventsCommand(putEventsComand));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     if (result.FailedEntryCount > 0) {
       logger.error(`Erro ao publicar evento ${JSON.stringify(result)}`);
       throw result.Entries.filter(entry => entry.ErrorCode);
