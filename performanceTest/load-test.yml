@@ -1,11 +1,13 @@
 config:
   target: "{{ $processEnvironment.TARGET_URL }}"
   phases:
-    - duration: 120
+    - duration: 600
       arrivalRate: 50
-      rampTo: 300
-    - duration: 900
-      arrivalRate: 300
+      rampTo: 600
+      name: "Warm up"
+    - duration: 7200
+      arrivalRate: 600
+      name: "test"
   defaults:
     headers:
       Content-Type: "application/json"
