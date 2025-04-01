@@ -18,7 +18,8 @@ export const messageHandler = async (event, context) => {
     await idepotencyCheck(event.detail.header.correlationId, context.functionName, logger);
     logger.info(`TCC - Log FunctionName: ${context.functionName} EventSource: ${event.source} CorrelationId: ${event.detail.header.correlationId}`);
   } catch (error) {
-    logger.error(`TCC - idepotency check for correlationId ${event.detail.header.correlationId} failed: ${error}`);
+    logger.error(`TCC - idepotency check for correlationId ${event.detail.header.correlationId} failed: ${error}`, error);
+    logger.error(error);
     return;
   }
 

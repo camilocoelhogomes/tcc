@@ -37,7 +37,8 @@ export const recordHandler = async (event, context) => {
   try {
     await idepotencyCheck(correlationId, context.functionName, logger);
   } catch (error) {
-    logger.error(`TCC - idepotency check for correlationId ${correlationId} failed: ${error}`);
+    logger.error(`TCC - idepotency check for correlationId ${correlationId} failed: ${error}`, error);
+    logger.error(error);
     return;
   }
   const eventMapped = {
@@ -57,7 +58,7 @@ export const recordHandler = async (event, context) => {
 export const idepotencyCheck = async (eventId, lambdaName, logger) => {
   logger.info(`TCC - Log IdepotencyCheck: ${lambdaName} EventId: ${eventId}`);
   const ttl = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
-  const params = {
+  const params = new PutItemCommand({
     TableName: "IdepotencyTable",
     Item: {
       pk: {
@@ -71,7 +72,7 @@ export const idepotencyCheck = async (eventId, lambdaName, logger) => {
       }
     },
     ConditionExpression: "attribute_not_exists(pk) AND attribute_not_exists(sk)", // Ensures idempotency
-  };
+  });
 
   return await client.send(new PutItemCommand(params));
 };
