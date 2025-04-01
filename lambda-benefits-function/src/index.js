@@ -27,22 +27,23 @@ export const messageHandler = async (event, context) => {
 
 export const idepotencyCheck = async (eventId, lambdaName, logger) => {
   logger.info(`TCC - Log IdepotencyCheck: ${lambdaName} EventId: ${eventId}`);
-  const ttl = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
-  const params = new PutItemCommand({
-    TableName: "IdepotencyTable",
+  const ttl = Math.floor(Date.now() / 1000) + 24 * 60 * 60; // Current time + 24 hours in seconds
+
+  const params = {
+    TableName: "IdepotencyTable", // Ensure this matches your DynamoDB table name
     Item: {
-      pk: {
-        S: eventId,
-      },
-      sk: {
-        s: lambdaName,
-      },
-      ttl: {
-        N: ttl.toString(),
-      }
+      pk: { S: eventId }, // Partition key
+      sk: { S: lambdaName }, // Sort key
+      ttl: { N: ttl.toString() }, // TTL in seconds
     },
     ConditionExpression: "attribute_not_exists(pk) AND attribute_not_exists(sk)", // Ensures idempotency
-  });
+  };
 
-  return await client.send(new PutItemCommand(params));
+  try {
+    const command = new PutItemCommand(params);
+    return await client.send(command);
+  } catch (error) {
+    logger.error(`TCC - Error in idepotencyCheck: ${error.message}`, error);
+    throw error;
+  }
 };
