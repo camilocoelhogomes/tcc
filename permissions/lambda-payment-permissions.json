@@ -29,6 +29,18 @@
         "sqs:GetQueueAttributes"
       ],
       "Resource": "arn:aws:sqs:*:*:payment-queue"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:GetItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+      ],
+      "Resource": "arn:aws:dynamodb:*:*:table/IdepotencyTable"
     }
   ]
 }

@@ -63,6 +63,7 @@ Resources:
     Type: AWS::Serverless::Function
     DependsOn:
       - PaymentQueue
+      - IdepotencyTable
     Properties:
       FunctionName: lambda-payment-function
       Handler: index.lambda_handler
@@ -147,6 +148,9 @@ Resources:
 
   LambdaBenefitsFunction:
     Type: AWS::Serverless::Function
+    DependsOn:
+      - BenefitsQueue
+      - IdepotencyTable
     Properties:
       FunctionName: lambda-benefits-function
       Handler: index.lambda_handler
@@ -233,6 +237,10 @@ Resources:
 
   LambdaOverdueFunction:
     Type: AWS::Serverless::Function
+    DependsOn:
+      - OverdueQueue
+      - IdepotencyTable
+      - OverdueRule
     Properties:
       FunctionName: lambda-overdue-function
       Handler: index.lambda_handler
@@ -256,9 +264,6 @@ Resources:
             BatchSize: 10
             ScalingConfig:
               MaximumConcurrency: 3
-    DependsOn:
-      - OverdueQueue
-      - OverdueRule
 
   LambdaExecutionRole:
     Type: AWS::IAM::Role
@@ -361,6 +366,27 @@ Resources:
                     Action=SendMessage&MessageBody=$input.body&MessageAttribute.1.Name=correlationId&MessageAttribute.1.Value.StringValue=$context.extendedRequestId&MessageAttribute.1.Value.DataType=String
                 passthroughBehavior: "never"
                 type: "aws"
+
+  IdepotencyTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: IdepotencyTable
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+        - AttributeName: ttl
+          AttributeType: N
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      TimeToLiveSpecification:
+        Enabled: true
+        AttributeName: ttl
 
 Parameters:
   BuildTimestamp:
