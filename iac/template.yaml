@@ -376,8 +376,6 @@ Resources:
           AttributeType: S
         - AttributeName: sk
           AttributeType: S
-        - AttributeName: ttl
-          AttributeType: N
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
