@@ -1,5 +1,5 @@
 import { LambdaLog } from "lambda-log";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 const client = new DynamoDBClient({});
 
 export const lambda_handler = async (event, context) => {
@@ -39,5 +39,5 @@ export const idepotencyCheck = async (eventId, lambdaName, logger) => {
 
 
 
-  return await client.send(new PutCommand(params));
+  return await client.send(new PutItemCommand(params));
 };

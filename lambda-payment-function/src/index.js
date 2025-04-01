@@ -1,6 +1,8 @@
 import { EventBridgeClient, PutEventsCommand } from "@aws-sdk/client-eventbridge";
 import { LambdaLog } from "lambda-log"; // Use ES module import
+import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 const eventBridgeClient = new EventBridgeClient();
+const client = new DynamoDBClient({});
 
 export const lambda_handler = async (event, context) => {
   const logger = new LambdaLog();
@@ -65,5 +67,5 @@ export const idepotencyCheck = async (eventId, lambdaName, logger) => {
     ConditionExpression: "attribute_not_exists(pk) AND attribute_not_exists(sk)", // Ensures idempotency
   };
 
-  return await client.send(new PutCommand(params));
+  return await client.send(new PutItemCommand(params));
 };
