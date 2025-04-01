@@ -37,5 +37,7 @@ export const idepotencyCheck = async (eventId, lambdaName, logger) => {
     ConditionExpression: "attribute_not_exists(pk) AND attribute_not_exists(sk)", // Ensures idempotency
   };
 
+
+
   return await client.send(new PutCommand(params));
 };
