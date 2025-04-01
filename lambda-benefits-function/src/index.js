@@ -19,7 +19,6 @@ export const messageHandler = async (event, context) => {
     logger.info(`TCC - Log FunctionName: ${context.functionName} EventSource: ${event.source} CorrelationId: ${event.detail.header.correlationId}`);
   } catch (error) {
     logger.error(`TCC - idepotency check for correlationId ${event.detail.header.correlationId} failed: ${error}`, error);
-    logger.error(error);
     return;
   }
 
@@ -39,11 +38,6 @@ export const idepotencyCheck = async (eventId, lambdaName, logger) => {
     ConditionExpression: "attribute_not_exists(pk) AND attribute_not_exists(sk)", // Ensures idempotency
   };
 
-  try {
-    const command = new PutItemCommand(params);
-    return await client.send(command);
-  } catch (error) {
-    logger.error(`TCC - Error in idepotencyCheck: ${error.message}`, error);
-    throw error;
-  }
+  const command = new PutItemCommand(params);
+  return await client.send(command);
 };

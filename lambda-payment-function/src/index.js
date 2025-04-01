@@ -14,7 +14,9 @@ export const lambda_handler = async (event, context) => {
     const putEventsComand = {
       Entries: entries.filter(entry => entry),
     };
-
+    if (putEventsComand.Entries.length === 0) {
+      return;
+    }
     const result = await eventBridgeClient.send(new PutEventsCommand(putEventsComand));
     if (result.FailedEntryCount > 0) {
       logger.error(`Erro ao publicar evento ${JSON.stringify(result)}`);
@@ -38,7 +40,6 @@ export const recordHandler = async (event, context) => {
     await idepotencyCheck(correlationId, context.functionName, logger);
   } catch (error) {
     logger.error(`TCC - idepotency check for correlationId ${correlationId} failed: ${error}`, error);
-    logger.error(error);
     return;
   }
   const eventMapped = {
@@ -69,12 +70,7 @@ export const idepotencyCheck = async (eventId, lambdaName, logger) => {
     ConditionExpression: "attribute_not_exists(pk) AND attribute_not_exists(sk)", // Ensures idempotency
   };
 
-  try {
-    const command = new PutItemCommand(params);
-    logger.info(`Comand => ${JSON.stringify(command)}`);
-    return await client.send(command);
-  } catch (error) {
-    logger.error(`TCC - Error in idepotencyCheck: ${error.message}`, error);
-    throw error;
-  }
+  const command = new PutItemCommand(params);
+  logger.info(`Comand => ${JSON.stringify(command)}`);
+  return await client.send(command);
 };
