@@ -60,9 +60,15 @@ export const idepotencyCheck = async (eventId, lambdaName, logger) => {
   const params = {
     TableName: "IdepotencyTable",
     Item: {
-      pk: eventId,
-      sk: lambdaName,
-      ttl: ttl,
+      pk: {
+        S: eventId,
+      },
+      sk: {
+        s: lambdaName,
+      },
+      ttl: {
+        N: ttl.toString(),
+      }
     },
     ConditionExpression: "attribute_not_exists(pk) AND attribute_not_exists(sk)", // Ensures idempotency
   };

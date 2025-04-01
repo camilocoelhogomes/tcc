@@ -27,17 +27,21 @@ export const messageHandler = async (event, context) => {
 export const idepotencyCheck = async (eventId, lambdaName, logger) => {
   logger.info(`TCC - Log IdepotencyCheck: ${lambdaName} EventId: ${eventId}`);
   const ttl = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
-  const params = {
+  const params = new PutItemCommand({
     TableName: "IdepotencyTable",
     Item: {
-      pk: eventId,
-      sk: lambdaName,
-      ttl: ttl,
+      pk: {
+        S: eventId,
+      },
+      sk: {
+        s: lambdaName,
+      },
+      ttl: {
+        N: ttl.toString(),
+      }
     },
     ConditionExpression: "attribute_not_exists(pk) AND attribute_not_exists(sk)", // Ensures idempotency
-  };
-
-
+  });
 
   return await client.send(new PutItemCommand(params));
 };
