@@ -35,9 +35,9 @@ export const recordHandler = async (event, context) => {
   logger.options.meta.correlationId = correlationId
   logger.options.meta.functionName = context.functionName;
   logger.options.meta.requestId = context.awsRequestId;
-  logger.info(`TCC - Log FunctionName: ${context.functionName} CorrelationId: ${correlationId}`);
   try {
     await idepotencyCheck(correlationId, context.functionName, logger);
+    logger.info(`TCC - Log FunctionName: ${context.functionName} CorrelationId: ${correlationId}`);
   } catch (error) {
     logger.error(`TCC - idepotency check for correlationId ${correlationId} failed: ${error}`, error);
     return;
