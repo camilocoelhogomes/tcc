@@ -78,6 +78,7 @@ Resources:
         Variables:
           ENV: production
           BuildTimestamp: !Ref BuildTimestamp
+          IDEPOTENCY: "TRUE"
       AutoPublishAlias: live
       DeploymentPreference:
         Enabled: true
@@ -165,6 +166,7 @@ Resources:
         Variables:
           ENV: production
           BuildTimestamp: !Ref BuildTimestamp
+          IDEPOTENCY: "TRUE"
       Events:
         BenefitsQueueEvent:
           Type: SQS
@@ -255,6 +257,7 @@ Resources:
         Variables:
           ENV: production
           BuildTimestamp: !Ref BuildTimestamp
+          IDEPOTENCY: "TRUE"
       Events:
         OverdueQueueEvent:
           Type: SQS

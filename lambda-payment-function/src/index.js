@@ -57,6 +57,9 @@ export const recordHandler = async (event, context) => {
 }
 
 export const idepotencyCheck = async (eventId, lambdaName, logger) => {
+  if (process.env.IDEPOTENCY !== "TRUE") {
+    return;
+  }
   logger.info(`TCC - Log IdepotencyCheck: ${lambdaName} EventId: ${eventId}`);
   const ttl = Math.floor(Date.now() / 1000) + 24 * 60 * 60; // Current time + 24 hours in seconds
 
