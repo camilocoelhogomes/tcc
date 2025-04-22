@@ -25,7 +25,7 @@ export const messageHandler = async (event, context) => {
 }
 
 export const idepotencyCheck = async (eventId, lambdaName, logger) => {
-  if (process.env.IDEPONCY !== "TRUE") {
+  if (process.env.IDEPOTENCY !== "TRUE") {
     return;
   }
   logger.info(`TCC - Log IdepotencyCheck: ${lambdaName} EventId: ${eventId}`);
