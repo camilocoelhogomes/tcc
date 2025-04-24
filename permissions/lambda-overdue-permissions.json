@@ -18,12 +18,17 @@
     },
     {
       "Effect": "Allow",
+      "Action": "events:PutEvents",
+      "Resource": "arn:aws:events:sa-east-1:034362047751:event-bus/tcc-event-bus"
+    },
+    {
+      "Effect": "Allow",
       "Action": [
         "sqs:ReceiveMessage",
         "sqs:DeleteMessage",
         "sqs:GetQueueAttributes"
       ],
-      "Resource": "arn:aws:sqs:*:*:overdue-queue"
+      "Resource": "arn:aws:sqs:*:*:*"
     },
     {
       "Effect": "Allow",
